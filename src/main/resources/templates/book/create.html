@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/main/main-layout">
+<head>
+<meta charset="ISO-8859-1"></meta>
+<title>SPRING-BOOT || CREATE OR UPDATE </title>
+</head>
+<body>
+	  <div class="container" layout:fragment="content" style="margin-top: 50px;">
+	   <div class="row" style="margin-top: 100px;">
+	   <div class="col-md-8  offset-md-2">
+		 <div class="row">
+		  <div class="col-md-8">
+		    <h3 th:if="${book?.id == null}" class="box-title">Create New </h3>
+		    <h3 th:if="${book?.id != null}" class="box-title">Update </h3>
+		  <form method="post" th:action="@{/book/create}" th:object="${book}">
+		  	<input type="hidden" th:field="*{id}"></input>
+		    <div class="form-group">
+		      <label for="email">Title:</label>
+			  <input type="text" th:field="*{title}" class="form-control" placeholder="Title" />
+		    </div>
+		    <div class="form-group">
+		      <label for="pwd">Author:</label>
+		      <input type="text"th:field="*{authorName}"   class="form-control"  placeholder="Author name" />
+		    </div>
+			<button type="submit" class="btn btn-info ">Submit</button>
+			<a type="submit" class="btn btn-danger" href="/book/list">Cancel</a>
+		  </form>
+		  </div>
+		  </div>
+	    </div>
+	  </div>
+	</div>
+</body>
+</html>

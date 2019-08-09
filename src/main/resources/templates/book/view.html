@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/main/main-layout">
+<head>
+<meta charset="ISO-8859-1"></meta>
+<title>SPRING-BOOT || VIEW </title>
+</head>
+<body>
+	  <div class="container" layout:fragment="content" style="margin-top: 50px;">
+	   <div class="row" style="margin-top: 100px;">
+        <div class="col-md-8  offset-md-2">
+			<!-- Horizontal Form -->
+			<div class="box box-info" style="margin-top: 50px;">
+				<div class="box-header with-border">
+					<a th:href="@{/book/list}" type="submit" class="btn btn-primary pull-right">Back to  List</a>
+					<p></p>
+				</div>
+				<div></div>
+					<div class="container-fluid" style="background-color:#2196F3;color:#fff;height:200px;">
+					  <h1>Your Selected Item Details:</h1>
+					  <p><strong>Name: </strong><level th:text="${book.title}" ></level></p>
+					  <p><strong>Author: </strong><level th:text="${book.authorName}" ></level></p>
+					</div>
+
+			</div>
+			<!-- /.box -->
+		</div>
+	  </div>
+	</div>
+</body>
+</html>

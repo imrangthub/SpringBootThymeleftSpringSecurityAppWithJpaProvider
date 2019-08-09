@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/main/main-layout">
+<head>
+<meta charset="ISO-8859-1"></meta>
+<title>SPRING-BOOT || ITEM-LIST </title>
+</head>
+<body>
+	  <div class="container" layout:fragment="content" style="margin-top: 50px;">
+	   <div class="row" style="margin-top: 100px;">
+	    <a class="btn btn-primary float-right" th:href="@{/book/create}"><span class="glyphicon glyphicon-plus"> </span> Add Path Report </a>    
+	  </div>
+	  <div class="row">
+	   <div class="col-md-8  offset-md-2">
+	     <div class="row">
+	      <h2 class="pull-right">Item List</h2>
+	  </div>  
+	  <p></p>    
+	  <table class="table" th:if="${bookList!=null}" >
+	    <thead>
+	      <tr>
+	        <th>SL# </th>
+	        <th>Title</th>
+	        <th>Author Name</th>
+	        <th>Action</th>
+	      </tr>
+	    </thead>
+		<tbody>
+			<tr th:each="bookObj,status : ${bookList}">
+				<td th:text="${status.count}"></td>
+				<td><span th:text="${bookObj.title}"></span></td>
+				<td th:text="${bookObj.authorName}"></td>												
+				<td>
+				  <div class="btn-group btn-group-sm">
+				    <a type="button" class="btn btn-primary" th:href="@{/book/edit(id=${bookObj.id})}"><i class="fa fa-edit"></i>Edit</a>
+				    <a type="button" class="btn btn-primary" th:href="@{/book/view(id=${bookObj.id})}"><i class="fa fa-edit"></i>View</a>
+				    <a type="button" class="btn btn-primary" th:href="@{/book/remove(id=${bookObj.id})}"> <i class="fa fa-trash"></i>Delete</a>
+				  </div>
+				</td>
+			</tr>
+	    </tbody>
+	  </table>
+	   </div>
+	  </div>
+	</div>
+</body>
+</html>
+

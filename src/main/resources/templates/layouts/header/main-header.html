@@ -1,0 +1,30 @@
+
+<header  th:fragment="header-main">
+	<nav class="navbar navbar-expand-sm bg-info navbar-dark fixed-top">
+	  <a class="navbar-brand" th:href="@{/auth/login}" sec:authorize="!isFullyAuthenticated()">Login</a>
+	  <a class="navbar-brand" th:href="@{/logout}" sec:authorize="isFullyAuthenticated()">Logout</a>
+	  
+<!-- 	  <div th:switch="${#authentication}? ${#authorization.expression('isFullyAuthenticated()')} : ${false}">
+    <span th:case="${false}">User is not logged in</span>
+    <span th:case="${true}">Logged in user</span>
+    <span th:case="*">Should never happen, but who knows...</span>
+</div> -->
+	  <div class="navbar-collapse collapse w-100 order-3 dual-collapse2" sec:authorize="isAuthenticated()">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Logged User: <span sec:authentication="name"></span> |</a>
+            </li>
+            <li class="nav-item">
+<!-- <a class="nav-link" href="#">Roles: <span sec:authentication="principal.authorities"></span></a> -->
+
+  <a class="nav-link" href="#">Roles: <span th:text="${#authentication.getAuthorities()}"></span></a>
+
+<!-- <th:block th:each="r, iter:${#authentication.getAuthorities()}">
+    <a class="nav-link" href="#">Roles: <span th:text="${r}"></span></a>
+</th:block> -->
+            </li>
+        </ul>
+    </div>
+    
+	</nav> 
+</header>

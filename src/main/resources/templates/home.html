@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/main/main-layout">
+<head>
+<meta charset="ISO-8859-1"></meta>
+<title>SPRING-BOOT</title>
+</head>
+<body>
+	 <div class="container" layout:fragment="content" style="margin-top: 100px;">
+	 
+	  <div class="row">
+      <h2>Pathology Item List</h2>
+	  </div>  
+	  <p></p>    
+	  <table class="table" th:if="${bookList!=null}" >
+	    <thead>
+	      <tr>
+	        <th>SL# </th>
+	        <th>Title</th>
+	        <th>Author Name</th>
+	      </tr>
+	    </thead>
+		<tbody>
+			<tr th:each="bookObj,status : ${bookList}">
+				<td th:text="${status.count}"></td>
+				<td><span th:text="${bookObj.title}"></span></td>
+				<td th:text="${bookObj.authorName}"></td>												
+			</tr>
+	    </tbody>
+	  </table>
+
+	</div>
+</body>
+</html>
