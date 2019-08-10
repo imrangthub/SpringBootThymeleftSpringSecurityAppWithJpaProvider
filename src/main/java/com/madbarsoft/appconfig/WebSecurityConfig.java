@@ -16,14 +16,22 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
+	private CustomAccessDeniedHandler customAccessDeniedHandler;
+	
+	@Autowired
 	private CustomAuthenticationProvider customAuthenticationProvider;
+	
+	@Autowired
+	private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+	
+	@Autowired
+	private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+	
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
 		auth.authenticationProvider(customAuthenticationProvider);
 		auth.eraseCredentials(false);
-		
 	}
 
 	 @Override
@@ -38,28 +46,51 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
    @Override
    protected void configure(HttpSecurity http) throws Exception {
-       http
-	         .authorizeRequests()
-	     		 .antMatchers("/book/**").hasRole("USER")
-	       		 .antMatchers("/admin/**").hasRole("ADMIN")	
-	             .antMatchers("/", "/home").permitAll()
-	             .antMatchers("/login").permitAll()
-	             .anyRequest().authenticated()
-	             .and()
-            .formLogin()
-	             .loginPage("/login")
-	             .defaultSuccessUrl("/home")
-	             .permitAll()
-	             .and()
-	         .logout() 
-	             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-	             .logoutSuccessUrl("/home")
-		         .permitAll()
-	             .and()
-	         .exceptionHandling().accessDeniedPage("/403");
+	   
+	 //authorize requests		
+	 		http.authorizeRequests()
+	 				.antMatchers("/").permitAll()
+	 				.antMatchers("/home").permitAll()
+	 				.antMatchers("/auth/**").permitAll()
+		     		.antMatchers("/book/**").hasRole("USER")
+		       		.antMatchers("/admin/**").hasRole("ADMIN")	
+	 				//.antMatchers("/user/doctor").hasAnyAuthority("ROLE_DOCTOR","ROLE_ADMIN")
+	 				.anyRequest()
+	 				.authenticated().and().csrf().disable();
+	 		      
+	 	//login and logout configuration	
+	 				http.formLogin()
+	 				.loginPage("/login")
+	 				//.loginProcessingUrl("/authLogin")
+	 				.usernameParameter("username")
+	 				.passwordParameter("password")
+	 				.successHandler(customAuthenticationSuccessHandler)
+	 				.failureHandler(customAuthenticationFailureHandler);
+	 				
+	 	//logout configuration
+	 				http.logout()
+	 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+	 				//.deleteCookies("JSESSIONID")
+	 				.logoutSuccessUrl("/home");
+	 				
+	 				
+	 	//exception configuration				
+	 				http.exceptionHandling()
+	 				.accessDeniedHandler(customAccessDeniedHandler);
+	 		
+	 	//remember me configuration
+//	 			http.rememberMe(). 
+//	 			key("tel-rem-me-key").
+//	 			rememberMeParameter("tel-remember-me").
+//	 			rememberMeCookieName("remember-me").
+//	 			tokenValiditySeconds(86400).userDetailsService(myUserDetailsService);
+	 			
+	 	//frame configuration		
+//	 		        http.headers()
+//	 		        .frameOptions()
+//	 		        .sameOrigin();
    }
    
-
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 	    return new BCryptPasswordEncoder();
